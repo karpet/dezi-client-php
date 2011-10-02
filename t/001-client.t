@@ -4,7 +4,7 @@
 require_once 'TestMore.php';
 set_include_path('../pest:.');
 
-plan(20);
+plan(16);
 
 require_once 'lib/Dezi_Client.php';
 
@@ -24,14 +24,14 @@ ok( $resp = $client->index( $html_doc, 'foo/bar.html' ),
 is( $resp->status, 200, "index scalar_ref success" );
 
 // add/update a Dezi::Doc to the index
-$dezi_doc = new Dezi_Doc(array( uri => 't/test-dezi-doc.xml' ));
+$dezi_doc = new Dezi_Doc(array( 'uri' => 't/test-dezi-doc.xml' ));
 $dezi_doc->content = file_get_contents( $dezi_doc->uri );
 ok( $resp = $client->index($dezi_doc), "index Dezi_Doc" );
 is( $resp->status, 200, "index Dezi_Doc success" );
 
 // remove a document from the index
 ok( $resp = $client->delete('foo/bar.html'), "delete foo/bar.html" );
-is( $resp->status, 200, "delete success" );
+is( $resp->status, 204, "delete success" );
 
 // search the index
 ok( $response = $client->search(array( 'q' => 'dezi' )), "search" );

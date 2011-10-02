@@ -52,12 +52,13 @@ class Dezi_Client {
     public $server;
     public $search_uri;
     public $index_uri;
+    public $last_response;
     protected $VERSION = '0.001000';
 
     /**
-     * Constructor.
+     * Constructor. Returns a new Client.
      *
-     * @param unknown $args (optional)
+     * @param array   $args (optional)
      */
     public function __construct($args=array('server'=>'http://localhost:5000')) {
         $this->server = $args['server'];
@@ -91,12 +92,15 @@ class Dezi_Client {
 
 
     /**
+     * index() - add or update a document in the index
      *
+     * Expects either a string file, string in-memory document,
+     * or a Dezi_Doc object.
      *
-     * @param unknown $doc
-     * @param unknown $uri          (optional)
-     * @param unknown $content_type (optional)
-     * @return unknown
+     * @param string_or_object $doc
+     * @param string  $uri          (optional)
+     * @param string  $content_type (optional)
+     * @return Dezi_HTTPResponse $resp
      */
     public function index($doc, $uri=null, $content_type=null) {
         $buf = null;
@@ -129,6 +133,7 @@ class Dezi_Client {
             $content_type = Dezi_Doc::get_mime_type($uri);
         }
 
+        //error_log("content_type=$content_type");
         $pest = new Pest($this->index_uri);
         $resp = $pest->post("/$uri", $buf, array('Content-Type: '.$content_type));
         $http_resp = new Dezi_HTTPResponse();
@@ -142,21 +147,49 @@ class Dezi_Client {
 
 
     /**
+     * search() - Fetch search results from a Dezi server.
      *
+     * $params may be any key/value pair as described in Search::OpenSearch.
+     *
+     * Returns a Dezi_Response on success and 0 on failure. Check
+     * $client->last_response on failure.
+     *
+     * @param array   $params
+     * @return Dezi_Response object
      */
-    public function search() {
-
-
+    public function search($params) {
+        $pest = new PestJSON($this->search_uri);
+        $params['format'] = 'json';  // force response type
+        $query = http_build_query($params);
+        $resp = $pest->get("?$query");
+        $http_resp = new Dezi_HTTPResponse();
+        $http_resp->status = $pest->lastStatus();
+        $http_resp->content = $resp;
+        $this->last_response = $http_resp;
+        if ($pest->lastStatus() != '200') {
+            return 0;
+        }
+        $dezi_response = new Dezi_Response($resp);
+        return $dezi_response;
     }
 
 
 
     /**
+     * delete() - remove a document from the index.
      *
+     * $uri should be the document URI.
+     *
+     * @param string  $uri
+     * @return Dezi_HTTPResponse $resp
      */
-    public function delete() {
-
-
+    public function delete($uri) {
+        $pest = new Pest($this->index_uri);
+        $resp = $pest->delete("/$uri");
+        $http_resp = new Dezi_HTTPResponse();
+        $http_resp->status = $pest->lastStatus();
+        $http_resp->content = $resp;
+        return $http_resp;
     }
 
 
