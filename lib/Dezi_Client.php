@@ -53,7 +53,7 @@ class Dezi_Client {
     public $search_uri;
     public $index_uri;
     public $last_response;
-    protected $VERSION = '0.001000';
+    public static $VERSION = '0.001000';
 
     /**
      * Constructor. Returns a new Client.
