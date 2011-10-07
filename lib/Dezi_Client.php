@@ -52,6 +52,8 @@ class Dezi_Client {
     public $server;
     public $search_uri;
     public $index_uri;
+    public $fields;
+    public $facets;
     public $last_response;
     public static $VERSION = '0.001000';
 
@@ -82,7 +84,9 @@ class Dezi_Client {
 
             //error_log( var_export($resp, true) );
             $this->search_uri = $resp['search'];
-            $this->index_uri =  $resp['index'];
+            $this->index_uri  = $resp['index'];
+            $this->fields     = $resp['fields'];
+            $this->facets     = $resp['facets'];
         }
 
     }
