@@ -49,7 +49,7 @@ SYNOPSIS
 
 class Dezi_Client {
 
-    public $server;
+    public $server = 'http://locahost:5000';
     public $search_uri;
     public $index_uri;
     public $fields;
@@ -62,8 +62,10 @@ class Dezi_Client {
      *
      * @param array   $args (optional)
      */
-    public function __construct($args=array('server'=>'http://localhost:5000')) {
-        $this->server = $args['server'];
+    public function __construct($args=array()) {
+        if (isset($args['server'])) {
+            $this->server = $args['server'];
+        }
         if (array_key_exists('search', $args) && array_key_exists('index', $args)) {
             $this->search_uri = $args['server'] . $args['search'];
             $this->index_uri  = $args['server'] . $args['index'];
@@ -92,6 +94,18 @@ class Dezi_Client {
     }
 
 
+    /**
+     * ping() - test if the server is alive.
+     *
+     * @return false on failure, JSON on success
+     */
+    public function ping() {
+        $pest = new PestJSON($this->server);
+        try { $resp = $pest->get('/'); }
+        catch(Pest_NotFound $err) { return false; }
+        catch(Pest_UnknownResponse $err) { return false; }
+        return $resp;
+    }
 
 
 
