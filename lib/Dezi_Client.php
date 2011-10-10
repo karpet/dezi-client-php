@@ -49,7 +49,7 @@ SYNOPSIS
 
 class Dezi_Client {
 
-    public $server = 'http://locahost:5000';
+    public $server = 'http://localhost:5000';
     public $search_uri;
     public $index_uri;
     public $fields;
@@ -135,7 +135,7 @@ class Dezi_Client {
             }
         }
         elseif (is_object($doc) && is_a($doc, 'Dezi_Doc')) {
-            $buf = $doc->content;
+            $buf = $doc->as_string();
             if ($uri==null) {
                 $uri = $doc->uri;
             }

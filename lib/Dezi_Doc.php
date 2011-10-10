@@ -18,6 +18,14 @@ SYNOPSIS
  ));
  $client->index( $doc );
 
+ $doc2 = new Dezi_Doc(array(
+    'uri' => 'auto/xml/magic',
+ ));
+ $doc2->set_field('title', 'ima magic');
+ $doc2->set_field('foo', array('one', 'two'));
+ $doc2->set_field('body', 'hello world!');
+ $client->index( $doc2 );
+
  // search results are also Dezi_Doc objects
  foreach ($response->results as $doc) {
      printf("hit: %s %s\n", $doc->score, $doc->uri);
@@ -35,7 +43,8 @@ class Dezi_Doc {
     public $mtime;
     public $size;
     public $score;
-    protected $VERSION = '0.001000';
+    private $fields = array();
+    protected $VERSION = '0.001001';
 
     private static $mime_types = array(
         'txt' => 'text/plain',
@@ -130,15 +139,76 @@ class Dezi_Doc {
     }
 
 
+    /**
+     * as_string - return Doc object, serialized.
+     *
+     * @return string
+     */
+    public function as_string() {
+        if (count($this->fields)) {
+            return $this->to_xml();
+        }
+        else {
+            return $this->content;
+        }
+    }
 
 
 
+    /**
+     * get_field
+     *
+     * @param string  $name
+     * @return string
+     */
+    public function get_field($name) {
+        if (!isset($this->fields[$name])) {
+            return null;
+        }
+        else {
+            return $this->fields[$name];
+        }
+    }
 
 
 
+    /**
+     * set_field
+     *
+     * @param string  $name
+     * @param string_or_array $value
+     */
+    public function set_field($name, $value) {
+        $this->fields[$name] = $value;
+    }
 
 
+    /**
+     * to_xml - convert fields to XML
+     *
+     * @return string $xml
+     */
+    public function to_xml() {
+        $this->mime_type = 'application/xml';
+        $xml = "<doc>";
+        foreach ($this->fields as $f=>$v) {
+            $f_safe = htmlspecialchars($f, ENT_QUOTES, 'UTF-8');
+            if (is_array($v)) {
+                foreach ($v as $value) {
+                    $xml .= sprintf("<%s>%s</%s>", $f_safe, htmlspecialchars($value, ENT_QUOTES, 'UTF-8'), $f_safe);
+                }
+            }
+            else {
+                $xml .= sprintf("<%s>%s</%s>", $f_safe, htmlspecialchars($v, ENT_QUOTES, 'UTF-8'), $f_safe);
+            }
+        }
+        $xml .= "</doc>";
 
+        //error_log($xml);
+
+        return $xml;
+
+    }
 
 
 

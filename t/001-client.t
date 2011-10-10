@@ -4,7 +4,7 @@
 require_once 'TestMore.php';
 set_include_path('../pest:.');
 
-plan(16);
+plan(19);
 
 require_once 'lib/Dezi_Client.php';
 
@@ -29,6 +29,16 @@ $dezi_doc->content = file_get_contents( $dezi_doc->uri );
 ok( $resp = $client->index($dezi_doc), "index Dezi_Doc" );
 is( $resp->status, 200, "index Dezi_Doc success" );
 
+$doc2 = new Dezi_Doc(array(
+        'uri' => 'auto/xml/magic',
+    ));
+$doc2->set_field('title', 'ima dezi magic');
+$doc2->set_field('foo', array('one', 'two'));
+$doc2->set_field('body', 'hello world!');
+ok( $resp = $client->index( $doc2 ), "index XML magic");
+is( $resp->status, 200, "index XML magic 200");
+
+
 // remove a document from the index
 ok( $resp = $client->delete('foo/bar.html'), "delete foo/bar.html" );
 is( $resp->status, 204, "delete success" );
@@ -52,7 +62,7 @@ foreach ($response->results as $result ) {
 }
 
 // print stats
-is( $response->total, 2, "got 2 results" );
+is( $response->total, 3, "got 3 results" );
 ok( $response->search_time, "got search_time" );
 ok( $response->build_time,  "got build time" );
 is( $response->query, "dezi", "round-trip query string" );
