@@ -52,8 +52,21 @@ class Dezi_Response {
         // turn results into objects
         if ($this->results) {
             $docs = array();
+            $doc_fields = array();
             foreach ($this->results as $r) {
-                $docs[] = new Dezi_Doc($r);
+                if (!count($doc_fields)) {
+                    foreach ($r as $k=>$v) {
+                        if (!property_exists($k, 'Dezi_Doc')) {
+                            $doc_fields[] = $k;
+                        }
+                    }
+                }
+                //diag_dump($r);
+                $d = new Dezi_Doc($r);
+                foreach ($doc_fields as $field) {
+                    $d->set_field( $field, $r[$field] );
+                }
+                $docs[] = $d;
             }
             $this->results = $docs;
         }
