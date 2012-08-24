@@ -4,7 +4,7 @@
 require_once 'TestMore.php';
 set_include_path('../pest:.');
 
-plan(19);
+plan(18);
 
 require_once 'lib/Dezi_Client.php';
 
