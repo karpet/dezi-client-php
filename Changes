@@ -1,0 +1,8 @@
+Revision history for dezi-client-php
+
+0.001000  10 Oct 2011
+    * initial release
+
+0.001001  24 Oct 2011
+    * fix tests to conform with Dezi server >= 0.1.5
+    * set user agent on internal Pest object

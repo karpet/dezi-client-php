@@ -55,7 +55,23 @@ class Dezi_Client {
     public $fields;
     public $facets;
     public $last_response;
-    public static $VERSION = '0.001000';
+    public static $VERSION = '0.001001';
+
+
+
+    /**
+     * Private method. Creates user agent.
+     *
+     * @param string  $url_base
+     * @param unknown $cls      (optional)
+     * @return PestJSON object
+     */
+    private function _new_user_agent($url_base, $cls='PestJSON') {
+        $pest = new $cls($url_base);
+        $pest->curl_opts[CURLOPT_USERAGENT] = 'dezi-client-php ' . self::$VERSION;
+        return $pest;
+    }
+
 
     /**
      * Constructor. Returns a new Client.
@@ -72,7 +88,7 @@ class Dezi_Client {
         }
         else {
 
-            $pest = new PestJSON($this->server);
+            $pest = $this->_new_user_agent($this->server);
             try {
                 $resp = $pest->get('/');
             }
@@ -100,7 +116,7 @@ class Dezi_Client {
      * @return false on failure, JSON on success
      */
     public function ping() {
-        $pest = new PestJSON($this->server);
+        $pest = $this->_new_user_agent($this->server);
         try { $resp = $pest->get('/'); }
         catch(Pest_NotFound $err) { return false; }
         catch(Pest_UnknownResponse $err) { return false; }
@@ -152,7 +168,7 @@ class Dezi_Client {
         }
 
         //error_log("content_type=$content_type");
-        $pest = new Pest($this->index_uri);
+        $pest = $this->_new_user_agent($this->index_uri, 'Pest');
         $resp = $pest->post("/$uri", $buf, array('Content-Type: '.$content_type));
         $http_resp = new Dezi_HTTPResponse();
         $http_resp->status = $pest->lastStatus();
@@ -176,7 +192,7 @@ class Dezi_Client {
      * @return Dezi_Response object
      */
     public function search($params) {
-        $pest = new PestJSON($this->search_uri);
+        $pest = $this->_new_user_agent($this->search_uri);
         $params['t'] = 'JSON';  // force response type
         $query = http_build_query($params);
         $resp = $pest->get("?$query");
@@ -202,7 +218,7 @@ class Dezi_Client {
      * @return Dezi_HTTPResponse $resp
      */
     public function delete($uri) {
-        $pest = new Pest($this->index_uri);
+        $pest = $this->_new_user_agent($this->index_uri, 'Pest');
         $resp = $pest->delete("/$uri");
         $http_resp = new Dezi_HTTPResponse();
         $http_resp->status = $pest->lastStatus();
