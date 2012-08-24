@@ -63,7 +63,7 @@ foreach ($response->results as $result ) {
 }
 
 // print stats
-is( $response->total, 3, "got 3 results" );
+is( $response->total, 2, "got 2 results" );
 ok( $response->search_time, "got search_time" );
 ok( $response->build_time,  "got build time" );
 is( $response->query, "dezi", "round-trip query string" );

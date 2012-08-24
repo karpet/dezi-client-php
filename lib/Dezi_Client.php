@@ -177,7 +177,7 @@ class Dezi_Client {
      */
     public function search($params) {
         $pest = new PestJSON($this->search_uri);
-        $params['format'] = 'json';  // force response type
+        $params['t'] = 'JSON';  // force response type
         $query = http_build_query($params);
         $resp = $pest->get("?$query");
         $http_resp = new Dezi_HTTPResponse();
