@@ -52,10 +52,12 @@ class Dezi_Client {
     public $server = 'http://localhost:5000';
     public $search_uri;
     public $index_uri;
+    public $commit_uri;
+    public $rollback_uri;
     public $fields;
     public $facets;
     public $last_response;
-    public static $VERSION = '0.001001';
+    public static $VERSION = '0.001002';
 
 
 
@@ -105,6 +107,8 @@ class Dezi_Client {
             $this->index_uri  = $resp['index'];
             $this->fields     = $resp['fields'];
             $this->facets     = $resp['facets'];
+            $this->commit_uri = $resp['commit'];
+            $this->rollback_uri = $resp['rollback'];
         }
 
     }
@@ -223,6 +227,41 @@ class Dezi_Client {
         $http_resp = new Dezi_HTTPResponse();
         $http_resp->status = $pest->lastStatus();
         $http_resp->content = $resp;
+        return $http_resp;
+    }
+
+
+    /**
+     * commit() - complete a transaction, saving changes to the server's index.
+     *
+     * @return Dezi_HTTPResponse $resp
+     */
+    public function commit() {
+        $pest = $this->_new_user_agent($this->commit_uri, 'Pest');
+        $resp = $pest->post("/", "");
+        $http_resp = new Dezi_HTTPResponse();
+        $http_resp->status = $pest->lastStatus();
+        $http_resp->content = $resp;
+
+        return $http_resp;
+    }
+
+
+
+
+
+    /**
+     * rollback() - abort a transaction
+     *
+     * @return Dezi_HTTPResponse $resp
+     */
+    public function rollback() {
+        $pest = $this->_new_user_agent($this->rollback_uri, 'Pest');
+        $resp = $pest->post("/", "");
+        $http_resp = new Dezi_HTTPResponse();
+        $http_resp->status = $pest->lastStatus();
+        $http_resp->content = $resp;
+
         return $http_resp;
     }
 
