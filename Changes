@@ -10,3 +10,5 @@ Revision history for dezi-client-php
 0.001002  3 Sept 2012
     * support Dezi 0.001008 with commit() and rollback()
 
+0.002000  12 Sept 2012
+    * support Dezi 0.002000 with username/password basic auth

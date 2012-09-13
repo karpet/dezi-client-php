@@ -8,7 +8,7 @@ plan(23);
 
 require_once 'lib/Dezi_Client.php';
 
-ok( $client = new Dezi_Client(),
+ok( $client = new Dezi_Client(array('username'=>'foo', 'password'=>'bar')),
     "new client"
 );
 

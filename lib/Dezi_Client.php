@@ -57,7 +57,9 @@ class Dezi_Client {
     public $fields;
     public $facets;
     public $last_response;
-    public static $VERSION = '0.001002';
+    private $username;
+    private $password;
+    public static $VERSION = '0.002000';
 
 
 
@@ -71,6 +73,9 @@ class Dezi_Client {
     private function _new_user_agent($url_base, $cls='PestJSON') {
         $pest = new $cls($url_base);
         $pest->curl_opts[CURLOPT_USERAGENT] = 'dezi-client-php ' . self::$VERSION;
+        if ($this->username && $this->password) {
+            $pest->curl_opts[CURLOPT_USERPWD] = $this->username . ':' . $this->password;
+        }
         return $pest;
     }
 
@@ -110,6 +115,8 @@ class Dezi_Client {
             $this->commit_uri = $resp['commit'];
             $this->rollback_uri = $resp['rollback'];
         }
+        $this->username = isset($args['username']) ? $args['username'] : null;
+        $this->password = isset($args['password']) ? $args['password'] : null;
 
     }
 
