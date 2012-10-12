@@ -1,5 +1,8 @@
 <?php
 
+$pest_path = realpath(dirname(__FILE__).'/../pest');
+//error_log("pest_path=$pest_path");
+set_include_path(get_include_path() . PATH_SEPARATOR . $pest_path);
 require_once 'PestJSON.php';
 require_once 'Dezi_Doc.php';
 require_once 'Dezi_Response.php';
