@@ -53,6 +53,7 @@ SYNOPSIS
 class Dezi_Client {
 
     public $server = 'http://localhost:5000';
+    public $about_server;
     public $search_uri;
     public $index_uri;
     public $commit_uri;
@@ -62,7 +63,7 @@ class Dezi_Client {
     public $last_response;
     private $username;
     private $password;
-    public static $VERSION = '0.002000';
+    public static $VERSION = '0.002001';
 
 
 
@@ -111,6 +112,7 @@ class Dezi_Client {
             }
 
             //error_log( var_export($resp, true) );
+            $this->about_server = $resp;
             $this->search_uri = $resp['search'];
             $this->index_uri  = $resp['index'];
             $this->fields     = $resp['fields'];
@@ -238,6 +240,25 @@ class Dezi_Client {
         $http_resp->status = $pest->lastStatus();
         $http_resp->content = $resp;
         return $http_resp;
+    }
+
+
+    /**
+     * Returns boolean indicating whether commit() or rollback()
+     * are supported by the Dezi server.
+     * Lack of server support will not prevent you from
+     * calling commit() or rollback(), but you should expect
+     * a 400 response from those methods if this method returns false.
+     *
+     * @return boolean
+     */
+    public function server_supports_transactions() {
+        foreach ($this->about_server['methods'] as $m) {
+            if ($m['description'] == 'complete any pending updates') {
+                return true;
+            }
+        }
+        return false;
     }
 
 

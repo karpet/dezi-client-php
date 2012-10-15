@@ -4,13 +4,15 @@
 require_once 'TestMore.php';
 set_include_path('../pest:.');
 
-plan(23);
+plan(24);
 
 require_once 'lib/Dezi_Client.php';
 
 ok( $client = new Dezi_Client(array('username'=>'foo', 'password'=>'bar')),
     "new client"
 );
+
+ok( $client->server_supports_transactions(), "server supports transactions" );
 
 // add/update a filesystem document to the index
 ok( $resp = $client->index('t/test.html'), "index t/test.html" );
