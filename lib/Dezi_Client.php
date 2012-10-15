@@ -63,7 +63,7 @@ class Dezi_Client {
     public $last_response;
     private $username;
     private $password;
-    public static $VERSION = '0.002001';
+    public static $VERSION = '0.002001_01';
 
 
 
@@ -154,8 +154,10 @@ class Dezi_Client {
      */
     public function index($doc, $uri=null, $content_type=null) {
         $buf = null;
+        $mtime = time();
         if (!is_object($doc) && file_exists($doc)) {
             $buf = file_get_contents($doc);
+            $mtime = filemtime($doc);
             if ($uri==null) {
                 $uri = $doc;
             }
@@ -168,6 +170,7 @@ class Dezi_Client {
         }
         elseif (is_object($doc) && is_a($doc, 'Dezi_Doc')) {
             $buf = $doc->as_string();
+            $mtime = $doc->mtime;
             if ($uri==null) {
                 $uri = $doc->uri;
             }
@@ -185,7 +188,11 @@ class Dezi_Client {
 
         //error_log("content_type=$content_type");
         $pest = $this->_new_user_agent($this->index_uri, 'Pest');
-        $resp = $pest->post("/$uri", $buf, array('Content-Type: '.$content_type));
+        $resp = $pest->post("/$uri", $buf, array(
+                'Content-Type: '.$content_type,
+                'X-SOS-Last-Modified: '.$mtime,
+            )
+        );
         $http_resp = new Dezi_HTTPResponse();
         $http_resp->status = $pest->lastStatus();
         $http_resp->content = $resp;

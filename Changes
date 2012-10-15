@@ -15,3 +15,6 @@ Revision history for dezi-client-php
 
 0.002001  14 Oct 2012
     * add server_supports_transactions()
+
+0.002002  xxx
+    * set mtime in request header when indexing
