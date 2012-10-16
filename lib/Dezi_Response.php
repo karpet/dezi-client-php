@@ -37,7 +37,7 @@ class Dezi_Response {
     public $query;
     public $fields;
     public $facets;
-    protected $VERSION = '0.001000';
+    protected $VERSION = '0.002002';
 
     /**
      * Constructor. Returns Dezi_Reponse object.

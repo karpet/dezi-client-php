@@ -44,7 +44,7 @@ class Dezi_Doc {
     public $size;
     public $score;
     private $fields = array();
-    protected $VERSION = '0.001001';
+    protected $VERSION = '0.002002';
 
     private static $mime_types = array(
         'txt' => 'text/plain',
