@@ -18,3 +18,7 @@ Revision history for dezi-client-php
 
 0.002002  15 Oct 2012
     * set mtime in request header when indexing
+
+0.002003  17 Oct 2012
+    * add Dezi_Response->suggestions for Dezi 0.002004
+

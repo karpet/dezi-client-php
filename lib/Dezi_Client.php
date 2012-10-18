@@ -63,7 +63,7 @@ class Dezi_Client {
     public $last_response;
     private $username;
     private $password;
-    public static $VERSION = '0.002002';
+    public static $VERSION = '0.002003';
 
 
 
