@@ -4,7 +4,7 @@
 require_once 'TestMore.php';
 set_include_path('../pest:.');
 
-plan(24);
+plan(25);
 
 require_once 'lib/Dezi_Client.php';
 
@@ -76,3 +76,15 @@ is( $response->total, 3, "got 3 results" );
 ok( $response->search_time, "got search_time" );
 ok( $response->build_time,  "got build time" );
 is( $response->query, "dezi", "round-trip query string" );
+
+// encoding test
+$html = "<html><body> TEST </body></html>";
+$docargs = array();
+$docargs['mime_type'] = 'text/html';
+$docargs['uri'] = rawurlencode ("//test.site/téstfrench");
+$docargs['mtime'] = time();
+$docargs['size' ] = strlen ($html);
+$docargs['content'] = $html;
+
+$doc = new Dezi_Doc($docargs);
+ok( $resp = $client->index( $doc ), "index document with utf8 encoded url" );
