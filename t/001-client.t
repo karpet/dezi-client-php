@@ -88,3 +88,4 @@ $docargs['content'] = $html;
 
 $doc = new Dezi_Doc($docargs);
 ok( $resp = $client->index( $doc ), "index document with utf8 encoded url" );
+diag_dump( $resp );
