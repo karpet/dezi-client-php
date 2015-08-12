@@ -33,6 +33,8 @@ SYNOPSIS
 
 */
 
+namespace Dezi;
+
 class Dezi_Doc {
 
     public $mime_type;

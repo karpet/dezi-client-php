@@ -2,13 +2,12 @@
 <?php
 
 require_once 'TestMore.php';
-set_include_path('../pest:.');
+
+require 'vendor/autoload.php';
 
 plan(25);
 
-require_once 'lib/Dezi_Client.php';
-
-ok( $client = new Dezi_Client(array('username'=>'foo', 'password'=>'bar')),
+ok( $client = new \Dezi\Dezi_Client(array('username'=>'foo', 'password'=>'bar')),
     "new client"
 );
 

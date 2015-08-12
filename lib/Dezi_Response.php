@@ -27,6 +27,7 @@ SYNOPSIS
  printf("      query: %s\n", $response->query);
 
 */
+namespace Dezi;
 
 class Dezi_Response {
 
