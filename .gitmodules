@@ -1,3 +1,0 @@
-[submodule "pest"]
-	path = pest
-	url = git@github.com:karpet/pest.git
