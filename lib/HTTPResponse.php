@@ -2,7 +2,7 @@
 
 namespace Dezi;
 
-class Dezi_HTTPResponse {
+class HTTPResponse {
 
     public $status;
     public $content;

@@ -8,10 +8,10 @@ plan(2);
 require 'vendor/autoload.php';
 
 
-diag("Testing Dezi_Client version " . \Dezi\Dezi_Client::$VERSION);
-pass("Dezi_Client sanity check");
+diag("Testing \Dezi\Client version " . \Dezi\Client::$VERSION);
+pass("\Dezi\Client sanity check");
 
-ok( $client = new \Dezi\Dezi_Client(),
+ok( $client = new \Dezi\Client(),
     "new client"
 );
 

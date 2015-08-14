@@ -2,17 +2,17 @@
 
 /*
 
-Dezi_Response - Dezi search server response
+Response - Dezi search server response
 
 SYNOPSIS
 
- require 'Dezi_Response.php';
- $client = new Dezi_Client(array(
+ require 'Response.php';
+ $client = new Client(array(
     'server' => 'http://localhost:5000'
  ));
 
  $response = $client->search(array( 'q' => 'foo' ));
- // $response isa Dezi_Response
+ // $response isa Response
 
  // iterate over results
  foreach ($response->results as $doc) {
@@ -29,7 +29,7 @@ SYNOPSIS
 */
 namespace Dezi;
 
-class Dezi_Response {
+class Response {
 
     public $results;
     public $total;
@@ -42,7 +42,7 @@ class Dezi_Response {
     protected $VERSION = '0.002003';
 
     /**
-     * Constructor. Returns Dezi_Reponse object.
+     * Constructor. Returns Reponse object.
      *
      * @param array   $args (optional)
      */
@@ -58,13 +58,13 @@ class Dezi_Response {
             foreach ($this->results as $r) {
                 if (!count($doc_fields)) {
                     foreach ($r as $k=>$v) {
-                        if (!property_exists($k, 'Dezi_Doc')) {
+                        if (!property_exists($k, 'Doc')) {
                             $doc_fields[] = $k;
                         }
                     }
                 }
                 //diag_dump($r);
-                $d = new Dezi_Doc($r);
+                $d = new Doc($r);
                 foreach ($doc_fields as $field) {
                     $d->set_field( $field, $r[$field] );
                 }

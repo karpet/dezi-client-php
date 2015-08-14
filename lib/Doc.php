@@ -2,14 +2,14 @@
 
 /*
 
-Dezi_Doc - a Dezi client document
+Doc - a Dezi client document
 
 SYNOPSIS
 
  // add doc to the index
- require 'Dezi_Doc.php';
+ require 'Doc.php';
  $html = "<html>hello world</html>";
- $doc = new Dezi_Doc(array(
+ $doc = new Doc(array(
      'mime_type' => 'text/html',
      'uri'       => 'foo/bar.html',
      'mtime'     => time(),
@@ -18,7 +18,7 @@ SYNOPSIS
  ));
  $client->index( $doc );
 
- $doc2 = new Dezi_Doc(array(
+ $doc2 = new Doc(array(
     'uri' => 'auto/xml/magic',
  ));
  $doc2->set_field('title', 'ima magic');
@@ -26,7 +26,7 @@ SYNOPSIS
  $doc2->set_field('body', 'hello world!');
  $client->index( $doc2 );
 
- // search results are also Dezi_Doc objects
+ // search results are also Doc objects
  foreach ($response->results as $doc) {
      printf("hit: %s %s\n", $doc->score, $doc->uri);
  }
@@ -35,7 +35,7 @@ SYNOPSIS
 
 namespace Dezi;
 
-class Dezi_Doc {
+class Doc {
 
     public $mime_type;
     public $summary;
