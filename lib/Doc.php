@@ -7,9 +7,8 @@ Doc - a Dezi client document
 SYNOPSIS
 
  // add doc to the index
- require 'Doc.php';
  $html = "<html>hello world</html>";
- $doc = new Doc(array(
+ $doc = new \Dezi\Doc(array(
      'mime_type' => 'text/html',
      'uri'       => 'foo/bar.html',
      'mtime'     => time(),
@@ -18,7 +17,7 @@ SYNOPSIS
  ));
  $client->index( $doc );
 
- $doc2 = new Doc(array(
+ $doc2 = new \Dezi\Doc(array(
     'uri' => 'auto/xml/magic',
  ));
  $doc2->set_field('title', 'ima magic');

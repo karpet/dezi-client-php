@@ -6,8 +6,7 @@ Response - Dezi search server response
 
 SYNOPSIS
 
- require 'Response.php';
- $client = new Client(array(
+ $client = new \Dezi\Client(array(
     'server' => 'http://localhost:5000'
  ));
 

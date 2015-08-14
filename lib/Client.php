@@ -18,7 +18,7 @@ SYNOPSIS
  require_once 'Client.php';
 
  # open a connection
- my $client = new Dezi::Client(array(
+ my $client = new \Dezi\Client(array(
     'server'  => 'http://localhost:5000',
  ));
 
