@@ -16,4 +16,15 @@ you have cloned dezi-client-php, you need to:
     % git submodule init
     % git submodule update
 
+Running the test suite requires a local Dezi server running on port 5000 (the default).
+You must turn off autocommit for the test suite to work.
+
+In one terminal window:
+
+    % dezi --no-ac
+
+And then in another window:
+
+    % make test
+
 
