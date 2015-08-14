@@ -25,12 +25,12 @@ ok( $resp = $client->index( $html_doc, 'foo/bar.html' ),
 is( $resp->status, 202, "index scalar_ref success" );
 
 // add/update a Dezi::Doc to the index
-$dezi_doc = new Dezi_Doc(array( 'uri' => 't/test-dezi-doc.xml' ));
+$dezi_doc = new \Dezi\Dezi_Doc(array( 'uri' => 't/test-dezi-doc.xml' ));
 $dezi_doc->content = file_get_contents( $dezi_doc->uri );
 ok( $resp = $client->index($dezi_doc), "index Dezi_Doc" );
 is( $resp->status, 202, "index Dezi_Doc success" );
 
-$doc2 = new Dezi_Doc(array(
+$doc2 = new \Dezi\Dezi_Doc(array(
         'uri' => 'auto/xml/magic',
     ));
 $doc2->set_field('title', 'ima dezi magic');
@@ -85,6 +85,6 @@ $docargs['mtime'] = time();
 $docargs['size' ] = strlen ($html);
 $docargs['content'] = $html;
 
-$doc = new Dezi_Doc($docargs);
+$doc = new \Dezi\Dezi_Doc($docargs);
 ok( $resp = $client->index( $doc ), "index document with utf8 encoded url" );
 diag_dump( $resp );
