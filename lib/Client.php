@@ -66,7 +66,7 @@ class Client {
     public $last_response;
     private $username;
     private $password;
-    public static $VERSION = '0.002003';
+    public static $VERSION = '1.1.1';
 
 
 

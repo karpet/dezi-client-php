@@ -2,7 +2,7 @@
     "name": "apm/dezi-client-php",
     "description": "Dezi client for php",
     "type": "library",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "authors": [
         {
             "name": "Peter Karman",
