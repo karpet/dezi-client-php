@@ -168,7 +168,7 @@ class Dezi_Client {
         elseif (!is_object($doc)) {
             $buf = $doc;
             if ($uri==null) {
-                throw new Exception("uri required");
+                throw new \Exception("uri required");
             }
         }
         elseif (is_object($doc) && is_a($doc, 'Dezi_Doc')) {
@@ -182,7 +182,7 @@ class Dezi_Client {
             }
         }
         else {
-            throw new Exception("doc must be a file, in-memory buffer, or Dezi_Doc object");
+            throw new \Exception("doc must be a file, in-memory buffer, or Dezi_Doc object");
         }
 
         if ($content_type==null) {
