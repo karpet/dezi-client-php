@@ -1,6 +1,8 @@
 <?php
 
-class Dezi_HTTPResponse {
+namespace Dezi;
+
+class HTTPResponse {
 
     public $status;
     public $content;

@@ -1,0 +1,22 @@
+{
+    "name": "apm/dezi-client-php",
+    "description": "Dezi client for php",
+    "type": "library",
+    "version": "1.1.1",
+    "authors": [
+        {
+            "name": "Peter Karman",
+            "email": "karpet@peknet.com"
+        },
+        {
+            "name": "Justin Heideman",
+            "email": "justin@fiddlyio.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"Dezi\\": "lib/"}
+    },
+    "require": {
+        "educoder/pest": "dev-master#fcb539e03c03bc925b93004097a268e6fd484dd8"
+    }
+}

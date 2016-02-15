@@ -22,3 +22,6 @@ Revision history for dezi-client-php
 0.002003  17 Oct 2012
     * add Dezi_Response->suggestions for Dezi 0.002004
 
+1.1.1  14 Aug 2015
+    * Convert to proper composer package
+    * Uses proper composer naming scheme, now 1.1.1

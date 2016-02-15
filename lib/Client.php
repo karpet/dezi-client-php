@@ -1,23 +1,13 @@
 <?php
 
-$pest_path = realpath(dirname(__FILE__).'/../pest');
-//error_log("pest_path=$pest_path");
-set_include_path(get_include_path() . PATH_SEPARATOR . $pest_path);
-require_once 'PestJSON.php';
-require_once 'Dezi_Doc.php';
-require_once 'Dezi_Response.php';
-require_once 'Dezi_HTTPResponse.php';
-
 /*
 
-Dezi_Client - interact with a Dezi server
+Client - interact with a Dezi server
 
 SYNOPSIS
 
- require_once 'Dezi_Client.php';
-
  # open a connection
- my $client = new Dezi::Client(array(
+ my $client = new \Dezi\Client(array(
     'server'  => 'http://localhost:5000',
  ));
 
@@ -28,7 +18,7 @@ SYNOPSIS
  $client->index( $html_doc, 'foo/bar.html' );
 
  # add/update a Dezi::Doc to the index
- $client->index( $dezi_doc );
+ $client->index( $doc );
 
  # remove a document from the index
  $client->delete( '/doc/uri/relative/to/index' );
@@ -50,7 +40,9 @@ SYNOPSIS
 
 */
 
-class Dezi_Client {
+namespace Dezi;
+
+class Client {
 
     public $server = 'http://localhost:5000';
     public $about_server;
@@ -63,7 +55,7 @@ class Dezi_Client {
     public $last_response;
     private $username;
     private $password;
-    public static $VERSION = '0.002003';
+    public static $VERSION = '1.1.1';
 
 
 
@@ -145,12 +137,12 @@ class Dezi_Client {
      * index() - add or update a document in the index
      *
      * Expects either a string file, string in-memory document,
-     * or a Dezi_Doc object.
+     * or a Doc object.
      *
      * @param string_or_object $doc
      * @param string  $uri          (optional)
      * @param string  $content_type (optional)
-     * @return Dezi_HTTPResponse $resp
+     * @return HTTPResponse $resp
      */
     public function index($doc, $uri=null, $content_type=null) {
         $buf = null;
@@ -165,10 +157,10 @@ class Dezi_Client {
         elseif (!is_object($doc)) {
             $buf = $doc;
             if ($uri==null) {
-                throw new Exception("uri required");
+                throw new \Exception("uri required");
             }
         }
-        elseif (is_object($doc) && is_a($doc, 'Dezi_Doc')) {
+        elseif (is_object($doc) && is_a($doc, '\Dezi\Doc')) {
             $buf = $doc->as_string();
             $mtime = $doc->mtime;
             if ($uri==null) {
@@ -179,11 +171,11 @@ class Dezi_Client {
             }
         }
         else {
-            throw new Exception("doc must be a file, in-memory buffer, or Dezi_Doc object");
+            throw new \Exception("doc must be a file, in-memory buffer, or \Dezi\Doc object");
         }
 
         if ($content_type==null) {
-            $content_type = Dezi_Doc::get_mime_type($uri);
+            $content_type = Doc::get_mime_type($uri);
         }
 
         //error_log("content_type=$content_type");
@@ -193,7 +185,7 @@ class Dezi_Client {
                 'X-SOS-Last-Modified: '.$mtime,
             )
         );
-        $http_resp = new Dezi_HTTPResponse();
+        $http_resp = new HTTPResponse();
         $http_resp->status = $pest->lastStatus();
         $http_resp->content = $resp;
 
@@ -208,26 +200,26 @@ class Dezi_Client {
      *
      * $params may be any key/value pair as described in Search::OpenSearch.
      *
-     * Returns a Dezi_Response on success and 0 on failure. Check
+     * Returns a Response on success and 0 on failure. Check
      * $client->last_response on failure.
      *
      * @param array   $params
-     * @return Dezi_Response object
+     * @return Response object
      */
     public function search($params) {
         $pest = $this->_new_user_agent($this->search_uri);
         $params['t'] = 'JSON';  // force response type
         $query = http_build_query($params);
         $resp = $pest->get("?$query");
-        $http_resp = new Dezi_HTTPResponse();
+        $http_resp = new HTTPResponse();
         $http_resp->status = $pest->lastStatus();
         $http_resp->content = $resp;
         $this->last_response = $http_resp;
         if ($pest->lastStatus() != '200') {
             return 0;
         }
-        $dezi_response = new Dezi_Response($resp);
-        return $dezi_response;
+        $response = new Response($resp);
+        return $response;
     }
 
 
@@ -238,12 +230,12 @@ class Dezi_Client {
      * $uri should be the document URI.
      *
      * @param string  $uri
-     * @return Dezi_HTTPResponse $resp
+     * @return HTTPResponse $resp
      */
     public function delete($uri) {
         $pest = $this->_new_user_agent($this->index_uri, 'Pest');
         $resp = $pest->delete("/$uri");
-        $http_resp = new Dezi_HTTPResponse();
+        $http_resp = new HTTPResponse();
         $http_resp->status = $pest->lastStatus();
         $http_resp->content = $resp;
         return $http_resp;
@@ -272,12 +264,12 @@ class Dezi_Client {
     /**
      * commit() - complete a transaction, saving changes to the server's index.
      *
-     * @return Dezi_HTTPResponse $resp
+     * @return HTTPResponse $resp
      */
     public function commit() {
         $pest = $this->_new_user_agent($this->commit_uri, 'Pest');
         $resp = $pest->post("/", "");
-        $http_resp = new Dezi_HTTPResponse();
+        $http_resp = new HTTPResponse();
         $http_resp->status = $pest->lastStatus();
         $http_resp->content = $resp;
 
@@ -291,12 +283,12 @@ class Dezi_Client {
     /**
      * rollback() - abort a transaction
      *
-     * @return Dezi_HTTPResponse $resp
+     * @return HTTPResponse $resp
      */
     public function rollback() {
         $pest = $this->_new_user_agent($this->rollback_uri, 'Pest');
         $resp = $pest->post("/", "");
-        $http_resp = new Dezi_HTTPResponse();
+        $http_resp = new HTTPResponse();
         $http_resp->status = $pest->lastStatus();
         $http_resp->content = $resp;
 
