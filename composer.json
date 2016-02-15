@@ -1,5 +1,5 @@
 {
-    "name": "apm/dezi-client-php",
+    "name": "karpet/dezi-client-php",
     "description": "Dezi client for php",
     "type": "library",
     "version": "1.1.1",
