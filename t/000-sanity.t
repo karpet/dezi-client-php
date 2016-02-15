@@ -2,16 +2,16 @@
 <?php
 
 require_once 'TestMore.php';
-set_include_path('../pest:.');
 
 plan(2);
 
-require_once 'lib/Dezi_Client.php';
+require 'vendor/autoload.php';
 
-diag("Testing Dezi_Client version " . Dezi_Client::$VERSION);
-pass("Dezi_Client sanity check");
 
-ok( $client = new Dezi_Client(),
+diag("Testing \Dezi\Client version " . \Dezi\Client::$VERSION);
+pass("\Dezi\Client sanity check");
+
+ok( $client = new \Dezi\Client(),
     "new client"
 );
 
