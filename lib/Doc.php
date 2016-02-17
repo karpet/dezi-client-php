@@ -45,7 +45,7 @@ class Doc {
     public $size;
     public $score;
     private $fields = array();
-    protected $VERSION = '0.002003';
+    protected $VERSION = '2.0.0';
 
     private static $mime_types = array(
         'txt' => 'text/plain',
