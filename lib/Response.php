@@ -38,7 +38,7 @@ class Response {
     public $fields;
     public $facets;
     public $suggestions;
-    protected $VERSION = '2.0.0';
+    protected $VERSION = '2.0.1';
 
     /**
      * Constructor. Returns Reponse object.
